@@ -1,7 +1,0 @@
-aws_vpc_cidr_block = "10.0.0.0/16"
-public_subnet_cidr_block = "10.0.3.0/24"
-public_az = "us-east-1a"
-private_subnet_cidr_block = "10.0.4.0/24"
-private_az = "us-east-1b"
-public_route_cidr_block = "0.0.0.0/0"
-private_route_cidr_block = "0.0.0.0/0"
