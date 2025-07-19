@@ -24,6 +24,19 @@ resource "aws_subnet" "private-subnet" {
   map_public_ip_on_launch = false
 }
 
+#elastic ip (eip)
+resource "aws_eip" "chandu-eip" {
+  domain = "vpc"
+}
+
+#NAT gatway
+resource "aws_nat_gateway" "chandu_nat_gateway" {
+  allocation_id = aws_eip.chandu-eip.id
+  subnet_id = aws_subnet.private-subnet.id
+
+  depends_on = [ aws_internet_gateway.chandu_ig_gateway ]
+}
+
 #public route table
 resource "aws_route_table" "public_routes" {
   vpc_id = aws_vpc.chandu_vpc.id
@@ -40,6 +53,7 @@ resource "aws_route_table" "private_routes" {
 
   route {
     cidr_block = var.private_route_cidr_block
+    nat_gateway_id = aws_nat_gateway.chandu_nat_gateway.id
   }
 }
 
@@ -47,7 +61,6 @@ resource "aws_route_table" "private_routes" {
 resource "aws_route_table_association" "public_route_association" {
   subnet_id = aws_subnet.public-subnet.id
   route_table_id = aws_route_table.public_routes.id
-  gateway_id = aws_internet_gateway.chandu_ig_gateway.id
 }
 
 #private routes table association
