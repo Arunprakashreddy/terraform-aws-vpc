@@ -28,11 +28,22 @@ variable "private_route_cidr_block" {
 }
 
 ################## ec2 instance block ##################
+
+####### public instance ##############
 variable "ami_public" {
   type = string
 }
 
 variable "instance_type_public" {
+  type = string
+}
+
+######## private instance #############
+variable "ami_private" {
+  type = string
+}
+
+variable "instance_type_private" {
   type = string
 }
 

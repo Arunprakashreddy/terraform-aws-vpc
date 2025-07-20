@@ -10,11 +10,18 @@ module "vpc" {
 }
 
 module "ec2_instance" {
+  #### public instance ###########
   source = "./module/ec2_instance"
   ami_public = var.ami_public
   instance_type_public = var.instance_type_public
   subnet_id_public = module.vpc.public_subnet_id
   security_groups_id = module.security_groups.security_group_chandu_id
+
+  ##### private instance #######
+  ami_private = var.ami_private
+  instance_type_private = var.instance_type_private
+  subnet_id_private = module.vpc.private_subnet_id
+  security_groups_id_private = module.security_groups.security_group_chandu_id
 }
 
 module "security_groups" {
