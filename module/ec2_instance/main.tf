@@ -4,6 +4,7 @@ resource "aws_instance" "chandu_public_server" {
   key_name = "chandu_keys"  #generate aws key manually and then apply
   subnet_id = var.subnet_id_public
   security_groups = [var.security_groups_id]
+  associate_public_ip_address = true
 
   connection {
     type = "ssh"
@@ -12,13 +13,21 @@ resource "aws_instance" "chandu_public_server" {
     host = self.public_ip
   }
 
+  provisioner "file" {
+    source = "C:/workarea/arun/cloud/terraform-aws-vpc/setup_scripts.sh"
+    destination = "/tmp/setup_scripts.sh"
+  }
+
   provisioner "remote-exec" {
     inline = [
-      "sudo yum update -y",
-      "sudo yum install -y httpd",
-      "sudo systemctl enable httpd",
-      "sudo systemctl start httpd"
+      "sleep 30",
+      "chmod +x /tmp/setup_scripts.sh",
+      "sudo /tmp/setup.sh"
     ]
+  }
+
+  timeouts {
+    create = "10m"
   }
 }
 
