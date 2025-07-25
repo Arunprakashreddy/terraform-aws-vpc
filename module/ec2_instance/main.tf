@@ -11,6 +11,7 @@ resource "aws_instance" "chandu_public_server" {
     user = "ec2-user"
     private_key = file("C:/Users/chand/Downloads/chandu_keys.pem") #path has to be updated every time we create key
     host = self.public_ip
+    #timeout = "1m"         # use if needed when there is a time-out error
   }
 
   provisioner "file" {
@@ -20,15 +21,15 @@ resource "aws_instance" "chandu_public_server" {
 
   provisioner "remote-exec" {
     inline = [
-      "sleep 30",
+      #"sleep 30",          # This can be used when there is a time for ssh connection
       "chmod +x /tmp/setup_scripts.sh",
-      "sudo /tmp/setup.sh"
+      "sudo /tmp/setup_scripts.sh"
     ]
   }
 
-  timeouts {
-    create = "10m"
-  }
+  /*timeouts {
+    create = "10m"    # This block can be used in the case of time-out error if ssh if failed to connect
+  }*/
 }
 
 resource "aws_instance" "chandu_private_server" {
