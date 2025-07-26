@@ -15,8 +15,13 @@ variable "subnet_id_public" {
   type = string
 }
 
-variable "security_groups_id" {
+variable "public_security_groups_id" {
   description = "value have to be fetched from security module"
+  type = string
+}
+
+variable "script_path" {
+  description = "value is string"
   type = string
 }
 
@@ -36,7 +41,7 @@ variable "subnet_id_private" {
   type = string
 }
 
-variable "security_groups_id_private" {
+variable "private_security_group_id" {
   description = "value of the security group is fetched from security group module"
   type = string
 }

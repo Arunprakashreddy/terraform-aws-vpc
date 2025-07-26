@@ -1,11 +1,19 @@
 #vpc creation
 resource "aws_vpc" "chandu_vpc" {
   cidr_block = var.aws_vpc_cidr_block
+
+  tags = {
+    name = "chandu-vpc"
+  }
 }
 
 #internet Gateway
 resource "aws_internet_gateway" "chandu_ig_gateway" {
   vpc_id = aws_vpc.chandu_vpc.id
+
+  tags = {
+    name = "chandu-igw"
+  }
 }
 
 #public subnet
@@ -14,6 +22,10 @@ resource "aws_subnet" "public-subnet" {
   cidr_block = var.public_subnet_cidr_block
   availability_zone = var.public_az
   map_public_ip_on_launch = true
+
+  tags = {
+    name = "public-sub"
+  }
 }
 
 #private subnet
@@ -22,6 +34,10 @@ resource "aws_subnet" "private-subnet" {
   cidr_block = var.private_subnet_cidr_block
   availability_zone = var.private_az
   map_public_ip_on_launch = false
+
+  tags = {
+    name = "private-sub"
+  }
 }
 
 #elastic ip (eip)
@@ -45,6 +61,10 @@ resource "aws_route_table" "public_routes" {
     cidr_block = var.public_route_cidr_block
     gateway_id = aws_internet_gateway.chandu_ig_gateway.id
   }
+
+  tags = {
+    name = "public-route"
+  }
 }
 
 #private route table
@@ -54,6 +74,10 @@ resource "aws_route_table" "private_routes" {
   route {
     cidr_block = var.private_route_cidr_block
     nat_gateway_id = aws_nat_gateway.chandu_nat_gateway.id
+  }
+
+  tags = {
+    name = "private-route"
   }
 }
 

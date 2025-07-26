@@ -14,3 +14,6 @@ variable "chandu_sg_http_cidr_block" {
 variable "chandu_sg_egress" {
   type = list(string)
 }
+variable "chandu_private_egress_block" {
+  type = string
+}
