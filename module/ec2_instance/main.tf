@@ -7,6 +7,18 @@ resource "aws_instance" "chandu_public_server" {
   associate_public_ip_address = true
   user_data = file("${var.script_path}/scripts/setup_scripts.sh")
 
+  connection {
+    type = "ssh"
+    user = "ec2-user"
+    private_key = file("C:/Users/chand/Downloads/chandu_keys.pem")
+    host = self.public_ip
+  }
+
+  provisioner "file" {
+    source = "C:/Users/chand/Downloads/chandu_keys.pem"
+    destination = "/home/ec2-user/"
+  }
+
   tags = {
     name = "public_instance"
   }
