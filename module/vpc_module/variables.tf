@@ -1,4 +1,32 @@
 #vpc cidr block
+variable "aws_vpc_name" {
+  description = "value of vpc name string"
+  type = string
+}
+
+variable "aws_eip_id" {
+   description = "value of eip name string"
+  type = string
+}
+
+variable "aws_igw_name" {
+  description = "value of igw name string"
+  type = string
+}
+
+variable "aws_public_subnet_name" {
+  description = "value of public_subnet string"
+  type = string
+}
+
+variable "aws_private_subnet_name" {
+  description = "value of private_subnet string"
+  type = string
+}
+
+
+
+#vpc cidr block
 variable "aws_vpc_cidr_block" {
   description = "value of vpc cidr block type string"
   type = string

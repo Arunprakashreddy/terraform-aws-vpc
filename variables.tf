@@ -48,18 +48,14 @@ variable "instance_type_private" {
 }
 
 ############ security groups #############
-variable "chandu_sg_ssh_cidr_block" {
+variable "global_sg_ssh_cidr_block" {
   type = list(string)
 }
 
-variable "chandu_sg_http_cidr_block" {
+variable "global_sg_http_cidr_block" {
   type = list(string)
 }
 
-variable "chandu_sg_egress" {
+variable "global_sg_egress" {
   type = list(string)
-}
-
-variable "chandu_private_egress_block" {
-  type = string
 }

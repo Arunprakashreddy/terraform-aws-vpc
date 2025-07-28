@@ -1,5 +1,5 @@
 output "vpc_id" {
-  value = aws_vpc.chandu_vpc.id
+  value = aws_vpc.global_vpc.id
 }
 
 output "public_subnet_id" {

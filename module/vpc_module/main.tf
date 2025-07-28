@@ -1,83 +1,78 @@
 #vpc creation
-resource "aws_vpc" "chandu_vpc" {
+resource "aws_vpc" "global_vpc" {
   cidr_block = var.aws_vpc_cidr_block
 
   tags = {
-    name = "chandu-vpc"
+    Name = var.aws_vpc_name
   }
 }
 
 #internet Gateway
-resource "aws_internet_gateway" "chandu_ig_gateway" {
-  vpc_id = aws_vpc.chandu_vpc.id
+resource "aws_internet_gateway" "global_igw_gateway" {
+  vpc_id = aws_vpc.global_vpc.id
 
   tags = {
-    name = "chandu-igw"
+    Name = var.aws_igw_name
   }
 }
 
 #public subnet
 resource "aws_subnet" "public-subnet" {
-  vpc_id = aws_vpc.chandu_vpc.id
+  vpc_id = aws_vpc.global_vpc.id
   cidr_block = var.public_subnet_cidr_block
   availability_zone = var.public_az
   map_public_ip_on_launch = true
 
   tags = {
-    name = "public-sub"
+    Name = var.aws_public_subnet_name
   }
 }
 
 #private subnet
 resource "aws_subnet" "private-subnet" {
-  vpc_id = aws_vpc.chandu_vpc.id
+  vpc_id = aws_vpc.global_vpc.id
   cidr_block = var.private_subnet_cidr_block
   availability_zone = var.private_az
   map_public_ip_on_launch = false
 
   tags = {
-    name = "private-sub"
+    Name = var.aws_private_subnet_name
   }
 }
 
-#elastic ip (eip)
-resource "aws_eip" "chandu-eip" {
-  domain = "vpc"
-}
-
 #NAT gatway
-resource "aws_nat_gateway" "chandu_nat_gateway" {
-  allocation_id = aws_eip.chandu-eip.id
-  subnet_id = aws_subnet.private-subnet.id
+resource "aws_nat_gateway" "global_nat_gateway" {
+  allocation_id = var.aws_eip_id
+  subnet_id = aws_subnet.public-subnet.id
 
-  depends_on = [ aws_internet_gateway.chandu_ig_gateway ]
+  depends_on = [ aws_internet_gateway.global_igw_gateway ]
 }
 
 #public route table
 resource "aws_route_table" "public_routes" {
-  vpc_id = aws_vpc.chandu_vpc.id
+  vpc_id = aws_vpc.global_vpc.id
 
   route {
     cidr_block = var.public_route_cidr_block
-    gateway_id = aws_internet_gateway.chandu_ig_gateway.id
+    gateway_id = aws_internet_gateway.global_igw_gateway.id
   }
 
   tags = {
-    name = "public-route"
+    Name = "public-route"
   }
 }
 
 #private route table
 resource "aws_route_table" "private_routes" {
-  vpc_id = aws_vpc.chandu_vpc.id
+  vpc_id = aws_vpc.global_vpc.id
 
   route {
     cidr_block = var.private_route_cidr_block
-    nat_gateway_id = aws_nat_gateway.chandu_nat_gateway.id
+    nat_gateway_id = aws_nat_gateway.global_nat_gateway.id
   }
 
   tags = {
-    name = "private-route"
+    Name = "private-route"
   }
 }
 
